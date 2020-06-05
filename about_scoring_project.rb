@@ -49,7 +49,7 @@ def score(dice)
     index = reminder != 0 ? reminder - 1 : 5
     number_count[index] += 1
   end
-  p number_count
+
   number_count.each_with_index do |count, index|
     if count >= 3
       number_count[index] -= 3
