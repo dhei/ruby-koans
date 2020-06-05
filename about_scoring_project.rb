@@ -30,7 +30,45 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # Your goal is to write the score method.
 
 def score(dice)
-  # You need to write this method
+  # Parameter validation
+  if !dice || dice.length > 5
+    raise ArgumentError, "dice must be an integer array of length <= 5."
+  end
+
+  # Empty array
+  total_score = 0
+  if dice.length == 0
+    total_score
+  end
+  
+  # Build an array of 6 integers, each integer represents 
+  # the count of the number (1-6) from the input
+  number_count = [0, 0, 0, 0, 0, 0]
+  dice.map do |value|
+    reminder = value % 6
+    index = reminder != 0 ? reminder - 1 : 5
+    number_count[index] += 1
+  end
+  p number_count
+  number_count.each_with_index do |count, index|
+    if count >= 3
+      number_count[index] -= 3
+      # A set of three ones is 1000 points
+      if index == 0
+        total_score += 1000
+      # A set of three numbers (other than ones) is worth 100 times the
+      # number. (e.g. three fives is 500 points).
+      elsif
+        total_score += 100 * (index + 1)
+      end
+    end
+  end
+  
+  # A one (that is not part of a set of three) is worth 100 points.
+  total_score += 100 * number_count[0]
+
+  # A five (that is not part of a set of three) is worth 50 points.
+  total_score += 50 * number_count[4]
 end
 
 class AboutScoringProject < Neo::Koan
